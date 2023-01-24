@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bebop
+  namespace: bebop
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bebop
+  template:
+    metadata:
+      labels:
+        app: bebop
+    spec:
+      containers:
+        - name: bebop
+          image: crerwin/bebop:0.0.1
+          args:
+            - serve
+          ports:
+            - containerPort: 8080
+              name: bebop
+      nodeSelector:
+        kubernetes.io/arch: arm64

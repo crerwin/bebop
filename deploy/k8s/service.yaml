@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bebop
+  namespace: bebop
+spec:
+  selector:
+    app: bebop
+  ports:
+    - protocol: TCP
+      port: 8080
