@@ -22,6 +22,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "Enable debug logging")
 
 	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(serveCmd)
 }
 
 func rootRun(cmd *cobra.Command, args []string) {
