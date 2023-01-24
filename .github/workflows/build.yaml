@@ -29,3 +29,28 @@ jobs:
         run: go build ./...
       - name: unit tests
         run: go test ./... -v
+
+  build_docker:
+    needs: [lint, test]
+    runs-on: [self-hosted, linux]
+    permissions:
+      id-token: write # This is required for requesting the JWT for AWS access
+    steps:
+      - uses: actions/checkout@v3
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::278421603546:role/bebop-deploy-role-prod
+          role-session-name: bebopdeploysession
+          aws-region: us-east-1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: bebop
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
