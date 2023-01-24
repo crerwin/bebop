@@ -71,4 +71,4 @@ jobs:
       - name: Apply deployment
         run: |
           kubectl get pods -n bebop
-          cat ./deploy/k8s/deployment.yaml | sed 's/:latest/:${{ github.sha }}' | kubectl apply -f -
+          cat ./deploy/k8s/deployment.yaml | sed 's/:latest/:${{ github.sha }}/' | kubectl apply -f -
