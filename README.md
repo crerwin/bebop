@@ -2,6 +2,8 @@
 
 Bebop is a basic Hello World-stype web service used to demonstrate various CI/CD concepts.
 
+![Build](https://github.com/crerwin/bebop/actions/workflows/build.yaml/badge.svg)
+
 # Building Bebop
 
 To build the Go code locally, from the root of the repo run `go install ./...`.  You can then execute Bebop using the `bebop` command:
@@ -69,3 +71,7 @@ $ docker run -p 8080:8080 bebop serve
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8080
 ```
+
+# Pipeline
+
+The (quick and dirty) deployment pipeline in Github Actions tests the code, builds a Docker image, uploads the image to ECR, then runs `kubectl apply` against `deploy/k8s/deployment.yaml`, swapping out the image tag for the git hash.  The app is then deployed to Kubernetes in my basement.
