@@ -34,7 +34,8 @@ jobs:
     needs: [lint, test]
     runs-on: [self-hosted, linux]
     permissions:
-      id-token: write # This is required for requesting the JWT for AWS access
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     steps:
       - uses: actions/checkout@v3
       - name: configure aws credentials
