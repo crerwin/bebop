@@ -22,4 +22,4 @@ spec:
             - containerPort: 8080
               name: bebop
       nodeSelector:
-        kubernetes.io/arch: arm64
+        kubernetes.io/arch: amd64

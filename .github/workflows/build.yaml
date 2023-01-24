@@ -58,3 +58,16 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REGISTRY_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REGISTRY_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG
+
+  deploy_bebop:
+    needs: [build_docker]
+    runs-on: [self-hosted, linux]
+    steps:
+      - uses: azure/setup-kubectl@v3
+        with:
+          version: "v1.25.3"
+        id: install
+      - name: Apply deployment
+        run: |
+          kubectl get pods -n bebop
+          cat deploy/k8s/deployment.yaml | sed 's/:latest/:b2b3e4500df9b1504d66385626ef2a57de62bc56/' | kubectl apply -f -
